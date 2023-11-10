@@ -24,28 +24,38 @@ evals<-read.csv("data/evals.csv", row.names=1)
 1.  Visualize the distribution of `score` in the dataframe `evals`.
 
 ```{r viz-score}
-# add code here
+ggplot(data = evals, aes(x = score))+
+  geom_histogram(binwidth = 0.1, fill = "blue", color = "black", alpha = 0.7) +
+  labs(title = "Distribution of Score",
+       x = "Score",
+       y = "Frequency")
+
+evals %>%
+  summarise(meanscore = mean(score, na.rm = TRUE),
+            sdscore = sd(score, na.rm = TRUE))
+
 ```
 
-*Add your other details and narratives here.*
+Skew left. This means that students on average, rate the courses around 4.2. My calculated mean is 4.17 and a range of values (SD) 0.54
 
 2.  Visualize and describe the relationship between `score` and `bty_avg` using `geom_point()` to represent the data. 
 
 ```{r scatterplot}
-# add code here
+ggplot(data = evals, aes(x = bty_avg, y = score)) + 
+  geom_jitter()
 ```
 
-*Add your narrative and other details here.*
+If there are multiple points with the same x and y values it is difficult to visualize the density of points in a specific region. Jitter adds random jitter to the points to prevent overlap. The Initial scatter plot...
 
 # Exercise 2: Simple Linear regression with a numerical predictor
 
 1. Fit a linear model called `score_bty_fit` to predict average professor evaluation `score` from average beauty rating (`bty_avg`). Print the regression output using `tidy()`.
 
-```{r fit-score_bty_fit, eval = FALSE}
+```{r fit-score_bty_fit}
 # remove eval = FALSE from the code chunk options after filling in the blanks
 score_bty_fit <- linear_reg() %>%
   set_engine("lm") %>%
-  fit(___ ~ ___, data = ___)
+  fit(score ~ bty_avg, data = evals)
 ```
 
 ```{r tidy-score_bty_fit, eval = FALSE}
